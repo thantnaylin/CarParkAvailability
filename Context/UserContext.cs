@@ -14,5 +14,33 @@ namespace CarParkAvailability.Context
         }
 
         public DbSet<User> Users { get; set; }
+
+        //Data seeder
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasData(new User {
+                UserId = 1,
+                FirstName = "Bob",
+                LastName = "The Cat",
+                Email = "bobthecat@email.com",
+                Password = "123456",
+                ContactNumber = "642946"
+            }, new User {
+                UserId = 2,
+                FirstName = "Aslan",
+                LastName = "The Ginger",
+                Email = "aslan@email.com",
+                Password = "123456",
+                ContactNumber = "642949"
+            }, new User
+            {
+                UserId = 3,
+                FirstName = "Tartee",
+                LastName = "The Shorthair",
+                Email = "tartee@email.com",
+                Password = "123456",
+                ContactNumber = "642943"
+            });
+        }
     }
 }
