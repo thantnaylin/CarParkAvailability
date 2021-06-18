@@ -1,5 +1,4 @@
-﻿using CarParkAvailability.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,16 +11,16 @@ namespace CarParkAvailability.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<User> Get()
-        {
-            return new[]
-            {
-                new User { FirstName = "Thant", LastName = "Nay Lin", Email = "thantnaylin@email.com", ContactNumber = "0216545" },
-                new User { FirstName = "Thant", LastName = "Nay Lin", Email = "thantnaylin@email.com", ContactNumber = "0216545" },
-                new User { FirstName = "Thant", LastName = "Nay Lin", Email = "thantnaylin@email.com", ContactNumber = "0216545" },
-                new User { FirstName = "Thant", LastName = "Nay Lin", Email = "thantnaylin@email.com", ContactNumber = "0216545" }
-            };
-        }
+        //[HttpGet]
+        //public IEnumerable<User> Get()
+        //{
+        //    return new[]
+        //    {
+        //        new User { FirstName = "Thant", LastName = "Nay Lin", Email = "thantnaylin@email.com", ContactNumber = "0216545" },
+        //        new User { FirstName = "Thant", LastName = "Nay Lin", Email = "thantnaylin@email.com", ContactNumber = "0216545" },
+        //        new User { FirstName = "Thant", LastName = "Nay Lin", Email = "thantnaylin@email.com", ContactNumber = "0216545" },
+        //        new User { FirstName = "Thant", LastName = "Nay Lin", Email = "thantnaylin@email.com", ContactNumber = "0216545" }
+        //    };
+        //}
     }
 }
