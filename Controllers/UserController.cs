@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CarParkAvailability.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -26,8 +26,30 @@ namespace CarParkAvailability.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<User> users = _repo.GetAll();
-            return Ok(users);
+            try
+            {
+                IEnumerable<User> users = _repo.GetAll();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); // $"Internal server error. Message: {ex.Message}"
+            }
+        }
+
+        // @desc    Fetch single user
+        // @route   GET /api/user/:id
+        // @access  Protected
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            User user = _repo.GetById(id);
+
+            if (user == null)
+            {
+                return NotFound("The user record couldn't be found.");
+            }
+            return Ok(user);
         }
     }
 }
