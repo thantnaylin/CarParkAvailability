@@ -28,5 +28,6 @@ namespace CarParkAvailability.Models
         public string Password { get; set; }
 
         public string ContactNumber { get; set; }
+
     }
 }
