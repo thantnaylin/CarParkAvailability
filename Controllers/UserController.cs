@@ -70,7 +70,6 @@ namespace CarParkAvailability.Controllers
         [HttpPost]
         public IActionResult Save([FromBody] User user)
         {
-
             if (user == null)
             {
                 Error error = new Error { StatusCode = 400, Message = "Invalid input(s)." };
@@ -79,6 +78,16 @@ namespace CarParkAvailability.Controllers
 
             try
             {
+                //Check if email exist
+                User existingUser = _repo.GetByEmail(user.Email);
+
+                if (existingUser != null)
+                {
+                    Error error = new Error { StatusCode = 400, Message = "Email address already exists." };
+                    return StatusCode(400, error);
+                }
+
+                //Proceed with password hashing and saving
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
                 user.Password = hashedPassword;
                 _repo.Add(user);

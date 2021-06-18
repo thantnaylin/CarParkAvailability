@@ -32,5 +32,15 @@ namespace CarParkAvailability.DataMangers
         {
             return _userContext.Users.FirstOrDefault(user => user.UserId == id);
         }
+
+        public User GetByEmail(string email)
+        {
+            return _userContext.Users.FirstOrDefault(user => user.Email == email);
+        }
+
+        public User Login(string email, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
