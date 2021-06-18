@@ -3,6 +3,7 @@ using CarParkAvailability.Repository;
 using CarParkAvailability.Utilities.Classes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace CarParkAvailability.Controllers
         // @desc    Fetch single user
         // @route   GET /api/users/:id
         // @access  Protected
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetById")]
         public IActionResult GetById(int id)
         {
             try
@@ -61,7 +62,34 @@ namespace CarParkAvailability.Controllers
                 Error error = new Error { StatusCode = 500, Message = ex.Message };
                 return StatusCode(500, error);
             }
-            
+        }
+
+        // @desc    Create new user
+        // @route   POST /api/users
+        // @access  Public
+        [HttpPost]
+        public IActionResult Save([FromBody] User user)
+        {
+
+            if (user == null)
+            {
+                Error error = new Error { StatusCode = 400, Message = "Invalid input(s)." };
+                return StatusCode(400, error);
+            }
+
+            try
+            {
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                user.Password = hashedPassword;
+                _repo.Add(user);
+                //return CreatedAtRoute("GetById", new { Id = user.UserId }, user);
+                return StatusCode(201, new { Id = user.UserId });
+            }
+            catch (Exception ex)
+            {
+                Error error = new Error { StatusCode = 500, Message = ex.Message };
+                return StatusCode(500, error);
+            }
         }
     }
 }
