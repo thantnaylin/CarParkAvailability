@@ -1,5 +1,6 @@
 ﻿using CarParkAvailability.Models;
 using CarParkAvailability.Repository;
+using CarParkAvailability.Utilities.Classes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,7 +22,7 @@ namespace CarParkAvailability.Controllers
         }
 
         // @desc    Fetch all users
-        // @route   GET /api/user
+        // @route   GET /api/users
         // @access  Public
         [HttpGet]
         public IActionResult Get()
@@ -33,23 +34,34 @@ namespace CarParkAvailability.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message); // $"Internal server error. Message: {ex.Message}"
+                Error error = new Error { StatusCode = 500, Message = ex.Message };
+                return StatusCode(500, error); // $"Internal server error. Message: {ex.Message}"
             }
         }
 
         // @desc    Fetch single user
-        // @route   GET /api/user/:id
+        // @route   GET /api/users/:id
         // @access  Protected
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            User user = _repo.GetById(id);
-
-            if (user == null)
+            try
             {
-                return NotFound("The user record couldn't be found.");
+                User user = _repo.GetById(id);
+
+                if (user == null)
+                {
+                    Error error = new Error { StatusCode = 404, Message = "The user record couldn't be found." };
+                    return StatusCode(404, error);
+                }
+                return Ok(user);
             }
-            return Ok(user);
+            catch (Exception ex)
+            {
+                Error error = new Error { StatusCode = 500, Message = ex.Message };
+                return StatusCode(500, error);
+            }
+            
         }
     }
 }
