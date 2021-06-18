@@ -100,5 +100,45 @@ namespace CarParkAvailability.Controllers
                 return StatusCode(500, error);
             }
         }
+
+        // @desc    User login
+        // @route   POST /api/users/login
+        // @access  Public
+        [HttpPost]
+        [Route("login")]
+        public IActionResult Login([FromBody] Login loginDetails)
+        {
+            try
+            {
+                User user = _repo.GetByEmail(loginDetails.Email);
+
+                if (user == null)
+                {
+                    Error error = new Error { StatusCode = 401, Message = "Invalid username or password." };
+                    return StatusCode(401, error);
+                }
+
+                //Validate password
+                bool isPasswordValid = BCrypt.Net.BCrypt.Verify(loginDetails.Password, user.Password);
+
+                if (isPasswordValid)
+                {
+                    //Generate JWT token
+                    return Ok(new { Id = user.UserId, Token = "Some jwt token" });
+                }
+                else
+                {
+                    //Unauthorized access
+                    Error error = new Error { StatusCode = 401, Message = "Invalid username or password." };
+                    return StatusCode(401, error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Error error = new Error { StatusCode = 500, Message = ex.Message };
+                return StatusCode(500, error);
+            }
+            
+        }
     }
 }
