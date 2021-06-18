@@ -1,4 +1,7 @@
 using CarParkAvailability.Context;
+using CarParkAvailability.DataMangers;
+using CarParkAvailability.Models;
+using CarParkAvailability.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +31,7 @@ namespace CarParkAvailability
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UserContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:DbConn"])); //Register sql server context
+            services.AddScoped<IDataRepository<User>, UserManager>(); // Configure the repository
             services.AddControllers();
         }
 
