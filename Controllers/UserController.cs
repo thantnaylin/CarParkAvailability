@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,6 +50,19 @@ namespace CarParkAvailability.Controllers
         [HttpGet("{id}", Name = "GetById")]
         public IActionResult GetById(int id)
         {
+            string token = HttpContext.Request.Headers.First(x => x.Key == "Authorization").Value;
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token.Split(" ")[1]);
+            var securityToken = jsonToken as JwtSecurityToken;
+
+            int userId = Convert.ToInt32(securityToken.Claims.First(claim => claim.Type == "user_id").Value);
+
+            if (userId != id)
+            {
+                Error error = new Error { StatusCode = 401, Message = "Unauthorized access." };
+                return StatusCode(401, error);
+            }
+
             try
             {
                 User user = _repo.GetById(id);
