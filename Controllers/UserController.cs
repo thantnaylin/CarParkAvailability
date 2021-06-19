@@ -1,4 +1,6 @@
-﻿using CarParkAvailability.Models;
+﻿using CarParkAvailability.DataMangers;
+using CarParkAvailability.Filters;
+using CarParkAvailability.Models;
 using CarParkAvailability.Repository;
 using CarParkAvailability.Utilities.Classes;
 using Microsoft.AspNetCore.Http;
@@ -43,6 +45,7 @@ namespace CarParkAvailability.Controllers
         // @desc    Fetch single user
         // @route   GET /api/users/:id
         // @access  Protected
+        [TokenAuthenticationFilter]
         [HttpGet("{id}", Name = "GetById")]
         public IActionResult GetById(int id)
         {
@@ -124,7 +127,9 @@ namespace CarParkAvailability.Controllers
                 if (isPasswordValid)
                 {
                     //Generate JWT token
-                    return Ok(new { Id = user.UserId, Token = "Some jwt token" });
+                    JwtManager jwtManager = new JwtManager();
+                    var token = jwtManager.GenerateToken(user.UserId);
+                    return Ok(new { Id = user.UserId, Token = token });
                 }
                 else
                 {
