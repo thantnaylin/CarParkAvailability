@@ -1,4 +1,5 @@
 ﻿using CarParkAvailability.DataMangers;
+using CarParkAvailability.Filters;
 using CarParkAvailability.Utilities.Classes;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -14,6 +15,11 @@ namespace CarParkAvailability.Controllers
     {
         CarParkManager _carPark = new CarParkManager();
 
+
+        // @desc    Fetch available car parks at current time
+        // @route   GET /api/carpark
+        // @access  Protected
+        [TokenAuthenticationFilter]
         [HttpGet]
         public async Task<object> GetAvailableCarPark()
         {
