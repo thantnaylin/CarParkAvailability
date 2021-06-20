@@ -25,46 +25,20 @@ namespace CarParkAvailability.Controllers
             _repo = dataRepository;
         }
 
-        // @desc    Fetch all users
-        // @route   GET /api/users
-        // @access  Public
-        [HttpGet]
-        public IActionResult Get()
-        {
-            try
-            {
-                IEnumerable<User> users = _repo.GetAll();
-                return Ok(users);
-            }
-            catch (Exception ex)
-            {
-                Error error = new Error { StatusCode = 500, Message = ex.Message };
-                return StatusCode(500, error); // $"Internal server error. Message: {ex.Message}"
-            }
-        }
-
         // @desc    Fetch single user
         // @route   GET /api/users/:id
         // @access  Protected
         [TokenAuthenticationFilter]
-        [HttpGet("{id}", Name = "GetById")]
-        public IActionResult GetById(int id)
+        [HttpGet]
+        [Route("Profile")]
+        public IActionResult GetProfile()
         {
-            string token = HttpContext.Request.Headers.First(x => x.Key == "Authorization").Value;
-            var handler = new JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(token.Split(" ")[1]);
-            var securityToken = jsonToken as JwtSecurityToken;
-
-            int userId = Convert.ToInt32(securityToken.Claims.First(claim => claim.Type == "user_id").Value);
-
-            if (userId != id)
-            {
-                Error error = new Error { StatusCode = 401, Message = "Unauthorized access." };
-                return StatusCode(401, error);
-            }
-
             try
             {
+                string token = HttpContext.Request.Headers.First(x => x.Key == "Authorization").Value;
+                JwtManager jwt = new JwtManager();
+                int id = jwt.DecodeToken(token);
+
                 User user = _repo.GetById(id);
 
                 if (user == null)
@@ -108,7 +82,7 @@ namespace CarParkAvailability.Controllers
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
                 user.Password = hashedPassword;
                 _repo.Add(user);
-                //return CreatedAtRoute("GetById", new { Id = user.UserId }, user);
+                
                 return StatusCode(201, new { Id = user.UserId });
             }
             catch (Exception ex)

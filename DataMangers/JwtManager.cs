@@ -48,5 +48,16 @@ namespace CarParkAvailability.DataMangers
 
             return claim;
         }
+
+        public int DecodeToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token.Split(" ")[1]); 
+            var securityToken = jsonToken as JwtSecurityToken;
+
+            int id = Convert.ToInt32(securityToken.Claims.First(claim => claim.Type == "user_id").Value);
+
+            return id;
+        }
     }
 }
