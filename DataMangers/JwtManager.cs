@@ -1,4 +1,5 @@
 ﻿using CarParkAvailability.Utilities.Classes;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,7 +20,7 @@ namespace CarParkAvailability.DataMangers
         public JwtManager()
         {
             _tokenHandler = new JwtSecurityTokenHandler();
-            _key = Encoding.ASCII.GetBytes("0f081b0455394428aa3a31f2472f2441"); //TODO:: Put this in appsetting
+            _key = Encoding.ASCII.GetBytes("0f081b0455394428aa3a31f2472f2441"); 
         }
 
         public string GenerateToken(int userId)

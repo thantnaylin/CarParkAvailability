@@ -9,12 +9,10 @@ namespace CarParkAvailability.DataMangers
 {
     public class CarParkManager
     {
-        private string _baseUrl = "https://api.data.gov.sg/v1/transport/carpark-availability"; //TODO: Put this to appsettings
-
-        public async Task<object> GetCarParkAvailabilityData()
+        public async Task<object> GetCarParkAvailabilityData(string baseUrl)
         {
             string currentDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
-            string url = _baseUrl + "?date_time=" + currentDateTime;
+            string url = baseUrl + "?date_time=" + currentDateTime;
 
             try
             {

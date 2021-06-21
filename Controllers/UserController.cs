@@ -5,12 +5,9 @@ using CarParkAvailability.Repository;
 using CarParkAvailability.Utilities.Classes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CarParkAvailability.Controllers
 {
@@ -20,10 +17,11 @@ namespace CarParkAvailability.Controllers
     {
         private readonly IDataRepository<User> _repo;
 
-        public UserController(IDataRepository<User> dataRepository)
+        public UserController(IDataRepository<User> dataRepository, IConfiguration config)
         {
             _repo = dataRepository;
         }
+
 
         // @desc    Fetch single user
         // @route   GET /api/users/:id

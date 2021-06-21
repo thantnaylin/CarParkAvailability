@@ -1,6 +1,7 @@
 ﻿using CarParkAvailability.DataMangers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace CarParkAvailability.Filters
 {
     public class TokenAuthenticationFilter : Attribute, IAuthorizationFilter
     {
+        public bool IsReusable => false;
+
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             bool result = true;

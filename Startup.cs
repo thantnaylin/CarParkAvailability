@@ -2,6 +2,7 @@ using CarParkAvailability.Context;
 using CarParkAvailability.DataMangers;
 using CarParkAvailability.Models;
 using CarParkAvailability.Repository;
+using CarParkAvailability.Utilities.Classes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +28,9 @@ namespace CarParkAvailability
         {
             services.AddDbContext<UserContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:DbConn"])); //Register sql server context
             services.AddScoped<IDataRepository<User>, UserManager>(); // Configure the repository
+
             services.AddControllers();
-            IdentityModelEventSource.ShowPII = true;
+            //IdentityModelEventSource.ShowPII = true;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
