@@ -56,7 +56,7 @@ namespace CarParkAvailability.Migrations
                             Email = "bobthecat@email.com",
                             FirstName = "Bob",
                             LastName = "The Cat",
-                            Password = "123456"
+                            Password = BCrypt.Net.BCrypt.HashPassword("123456")
                         },
                         new
                         {
@@ -65,7 +65,7 @@ namespace CarParkAvailability.Migrations
                             Email = "aslan@email.com",
                             FirstName = "Aslan",
                             LastName = "The Ginger",
-                            Password = "123456"
+                            Password = BCrypt.Net.BCrypt.HashPassword("123456")
                         },
                         new
                         {
@@ -74,7 +74,7 @@ namespace CarParkAvailability.Migrations
                             Email = "tartee@email.com",
                             FirstName = "Tartee",
                             LastName = "The Shorthair",
-                            Password = "123456"
+                            Password = BCrypt.Net.BCrypt.HashPassword("123456")
                         });
                 });
 #pragma warning restore 612, 618
